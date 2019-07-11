@@ -29,7 +29,7 @@ skip_ids = [word_to_id[w] for w in skip_words]
 
 # model.reset_state()
 
-start_words = 'beauty is'
+start_words = 'life is'
 start_ids = [word_to_id[w] for w in start_words.split(' ')]
 
 for x in start_ids[:-1]:

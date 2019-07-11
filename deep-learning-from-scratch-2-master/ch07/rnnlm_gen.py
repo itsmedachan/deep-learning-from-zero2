@@ -33,6 +33,7 @@ class RnnlmGen(Rnnlm):
 
 class BetterRnnlmGen(BetterRnnlm):
     def generate(self, start_id, skip_ids=None, sample_size=100):
+        #start_id:最初に与える単語ID、sample_size:サンプリングする単語の数、skip_uids:<unk>やNなどの前処理で生成された単語をskipするため
         word_ids = [start_id]
 
         x = start_id

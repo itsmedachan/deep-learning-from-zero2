@@ -20,6 +20,7 @@ class BetterRnnlm(BaseModel):
         V, D, H = vocab_size, wordvec_size, hidden_size
         rn = np.random.randn
 
+        # 重みの初期化
         embed_W = (rn(V, D) / 100).astype('f')
         lstm_Wx1 = (rn(D, 4 * H) / np.sqrt(D)).astype('f')
         lstm_Wh1 = (rn(H, 4 * H) / np.sqrt(H)).astype('f')
@@ -29,9 +30,10 @@ class BetterRnnlm(BaseModel):
         lstm_b2 = np.zeros(4 * H).astype('f')
         affine_b = np.zeros(V).astype('f')
 
+        # LSTMレイヤを2つ生成
         self.layers = [
             TimeEmbedding(embed_W),
-            TimeDropout(dropout_ratio),
+            TimeDropout(dropout_ratio), # dropout
             TimeLSTM(lstm_Wx1, lstm_Wh1, lstm_b1, stateful=True),
             TimeDropout(dropout_ratio),
             TimeLSTM(lstm_Wx2, lstm_Wh2, lstm_b2, stateful=True),
@@ -42,6 +44,7 @@ class BetterRnnlm(BaseModel):
         self.lstm_layers = [self.layers[2], self.layers[4]]
         self.drop_layers = [self.layers[1], self.layers[3], self.layers[5]]
 
+        # 重みと勾配をリストにまとめる
         self.params, self.grads = [], []
         for layer in self.layers:
             self.params += layer.params
